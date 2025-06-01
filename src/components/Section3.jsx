@@ -5,7 +5,7 @@ import { useRef, useState } from 'react'
 const images = Array.from({ length: 18 }).map((_, i) => ({ src: `/images/${i + 1}.jpg`, id: i + 1 }))
 
 export default function Section3() {
-
+    let panelWidth = window.innerWidth < 768 ? 125 : 200
     const sectionRef = useRef(null)
     const wrapperRef = useRef(null)
     const containerRef = useRef(null)
@@ -36,10 +36,10 @@ export default function Section3() {
             gsap.set(panel, {
                 flexGrow: 1,
                 filter: `grayscale(${grayscale})`,
-                height: newHeight,
+                scaleY: newHeight,
             });
             gsap.set(miniMapsRef.current[i], {
-                height: distance >= 300 ? "40%" : newHeight,
+                scaleY: distance >= 300 ? "40%" : newHeight,
             });
         });
     })
@@ -71,13 +71,13 @@ export default function Section3() {
                     const tl = gsap.timeline();
                     tl
                         .to(panel, {
-                            height: newHeight,
+                            scaleY: newHeight,
                             filter: `grayscale(${grayscale})`,
                             duration: 3.5,
                             ease: "power3.out"
                         }, 0) // ⬅️ inizia a tempo 0
                         .to(miniMapsRef.current[i], {
-                            height: distance >= 300 ? "40%" : newHeight,
+                            scaleY: distance >= 300 ? "40%" : newHeight,
                             ease: "none"
                         }, 0); // ⬅️ anche questa parte a tempo 0
                 }
@@ -106,7 +106,7 @@ export default function Section3() {
         return () => {
             if (rafId) cancelAnimationFrame(rafId);
         };
-    }, { scope: sectionRef });
+    }, { scope: containerRef });
 
     // * ANIMS BASED ON EVENTS
     const handleClick = (e) => {
@@ -115,20 +115,20 @@ export default function Section3() {
             if (newTarget !== target) {
                 if (target) {
                     gsap.to(target, {
-                        height: "inherits",
+                        scaleY: "inherits",
                         flexGrow: 1,
                         overwrite: "auto"
                     })
                 }
                 gsap.to(newTarget, {
-                    height: "100%",
+                    scaleY: "100%",
                     flexGrow: 6,
                     overwrite: "auto"
                 })
                 setTarget(newTarget)
             } else {
                 gsap.to(target, {
-                    height: "inherits",
+                    scaleY: "inherits",
                     flexGrow: 1,
                     overwrite: "auto"
                 })
@@ -138,7 +138,6 @@ export default function Section3() {
 
     }
 
-    let panelWidth = window.innerWidth < 768 ? 125 : 200
 
     return (
         <div ref={sectionRef} className="h-screen min-w-screen flex flex-col py-6 items-center justify-between space-y-6">
@@ -168,7 +167,7 @@ export default function Section3() {
                     <div
                         key={i}
                         ref={el => (miniMapsRef.current[i] = el)}
-                        className="border border-black">
+                        className="border min-h-1/2 border-black">
                     </div>
                 )}
             </div>
