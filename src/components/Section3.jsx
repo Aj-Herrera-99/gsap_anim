@@ -13,7 +13,7 @@ export default function Section3() {
     const miniMapsRef = useRef([])
     const ctxRef = useRef(); // salvi il contesto
 
-    const [target, setTarget] = useState(null)
+    const [target, setTarget] = useState({ el: null, scaleY: 1 })
 
     // * INITIAL SETUP
     useGSAP(() => {
@@ -113,28 +113,30 @@ export default function Section3() {
                 const values = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
                 scaleY = parseFloat(values[3]);
             }
-            if (newTarget !== target) {
 
-                if (target) {
-                    gsap.to(target, {
-                        scaleY,
-                        flexGrow: 1,
+            if (target.el) {
+                if (newTarget !== target.el) {
+                    gsap.to(newTarget, {
+                        scaleY: 1,
+                        flexGrow: 4,
                         overwrite: "auto"
                     })
+                    setTarget({ el: newTarget, scaleY })
+                } else {
+                    setTarget({ el: null, scaleY: 1 })
                 }
+                gsap.to(target.el, {
+                    scaleY: target?.scaleY ?? 1,
+                    flexGrow: 1,
+                    overwrite: "auto"
+                })
+            } else {
                 gsap.to(newTarget, {
                     scaleY: 1,
                     flexGrow: 4,
                     overwrite: "auto"
                 })
-                setTarget(newTarget)
-            } else {
-                gsap.to(target, {
-                    scaleY,
-                    flexGrow: 1,
-                    overwrite: "auto"
-                })
-                setTarget(null)
+                setTarget({ el: newTarget, scaleY })
             }
         }, containerRef)
 

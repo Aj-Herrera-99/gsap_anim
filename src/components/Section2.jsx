@@ -22,6 +22,9 @@ export default function Section2() {
                 scrub: 0.5,
                 start: "top top",
                 end: `${totalWidth}px`, // o `${totalWidth}vw` se vuoi dinamico
+                onUpdate: self => {
+                    console.log(self.progress)
+                }
             },
         });
     }, { scope: containerRef });
