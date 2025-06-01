@@ -49,7 +49,7 @@ export default function Section2() {
                     <div
                         key={n}
                         ref={el => (panelsRef.current[i] = el)}
-                        className="w-screen h-full flex items-center justify-center text-white text-4xl"
+                        className="w-screen h-full flex items-center justify-center text-white text-4xl will-change-transform"
                         style={{ backgroundColor: `hsl(${n * 90}, 70%, 50%)` }}
                     >
                         Panel {n}

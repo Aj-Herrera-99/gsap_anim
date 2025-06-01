@@ -155,7 +155,7 @@ export default function Section3() {
                                 backgroundSize: "cover",
                                 backgroundPosition: "center",
                             }}
-                            className="panel h-[70%] grow will-change-[height, filter, grayscale] cursor-pointer grayscale-100 hover:!grayscale-0 overflow-hidden">
+                            className="panel h-[70%] grow will-change-[height, filter, grayscale, transform] cursor-pointer grayscale-100 hover:!grayscale-0 overflow-hidden">
                         </div>
                     )}
                 </div>
