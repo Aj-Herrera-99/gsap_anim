@@ -73,7 +73,7 @@ export default function Section3() {
                         .to(panel, {
                             scaleY: newHeight,
                             filter: `grayscale(${grayscale})`,
-                            duration: 3.5,
+                            duration: 1.2,
                             ease: "power3.out"
                         }, 0) // ⬅️ inizia a tempo 0
                         .to(miniMapsRef.current[i], {
@@ -92,7 +92,7 @@ export default function Section3() {
             scrollTrigger: {
                 trigger: sectionRef.current,
                 pin: true,
-                scrub: true,
+                scrub: 0.3,
                 start: `top top`,
                 end: `+=${totalWidth * 1.2}px`, // multiplier arbitrario
                 onUpdate: () => {
@@ -115,20 +115,20 @@ export default function Section3() {
             if (newTarget !== target) {
                 if (target) {
                     gsap.to(target, {
-                        scaleY: "inherits",
+                        scaleY: "initial",
                         flexGrow: 1,
                         overwrite: "auto"
                     })
                 }
                 gsap.to(newTarget, {
                     scaleY: "100%",
-                    flexGrow: 6,
+                    flexGrow: 4,
                     overwrite: "auto"
                 })
                 setTarget(newTarget)
             } else {
                 gsap.to(target, {
-                    scaleY: "inherits",
+                    scaleY: "initial",
                     flexGrow: 1,
                     overwrite: "auto"
                 })
@@ -153,7 +153,7 @@ export default function Section3() {
                             style={{
                                 backgroundImage: `url(${img.src})`,
                                 backgroundSize: "cover",
-                                backgroundPosition: "center"
+                                backgroundPosition: "center",
                             }}
                             className="panel h-[70%] grow will-change-[height, filter, grayscale] cursor-pointer grayscale-100 hover:!grayscale-0 overflow-hidden">
                         </div>
