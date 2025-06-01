@@ -86,7 +86,7 @@ export default function Section3() {
             rafId = null; // Reset after update
         };
 
-        gsap.to(containerRef.current, {
+        gsap.to(panels, {
             x: - totalWidth + wrapperWidth - wrapperWidth / 2 + panels[0].offsetWidth / 2, // wrapperWidth / 2 perche devo spostare ulteriormente a sx di meta wrapper per via di pl-[50%]
             ease: "none",
             scrollTrigger: {
