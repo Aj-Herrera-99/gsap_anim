@@ -24,22 +24,22 @@ export default function Section3() {
             const rect = panel.getBoundingClientRect();
             const position = rect.left + rect.width / 2;
             const distance = Math.abs(position - center);
-            let newHeight;
+            let scaleY;
             let grayscale;
             if (distance < 75) {
-                newHeight = "100%"; grayscale = 0;
+                scaleY = 1; grayscale = 0;
             }
-            else if (distance < 200) { newHeight = "90%"; grayscale = .9 }
-            else if (distance < 300) { newHeight = "80%"; grayscale = .95 }
-            else { newHeight = "70%"; grayscale = 1 }
+            else if (distance < 200) { scaleY = .9; grayscale = .9 }
+            else if (distance < 300) { scaleY = .8; grayscale = .95 }
+            else { scaleY = .7; grayscale = 1 }
 
             gsap.set(panel, {
                 flexGrow: 1,
                 filter: `grayscale(${grayscale})`,
-                scaleY: newHeight,
+                scaleY: scaleY,
             });
             gsap.set(miniMapsRef.current[i], {
-                scaleY: distance >= 300 ? "40%" : newHeight,
+                scaleY: distance >= 300 ? .4 : scaleY,
             });
         });
     })
@@ -58,26 +58,26 @@ export default function Section3() {
                 const rect = panel.getBoundingClientRect();
                 const position = rect.left + rect.width / 2;
                 const distance = Math.abs(position - center);
-                let newHeight;
+                let scaleY;
                 let grayscale;
                 if (distance < 75) {
-                    newHeight = "100%"; grayscale = 0;
+                    scaleY = 1; grayscale = 0;
                 }
-                else if (distance < 200) { newHeight = "90%"; grayscale = .9 }
-                else if (distance < 300) { newHeight = "80%"; grayscale = .95 }
-                else { newHeight = "70%"; grayscale = 1 }
+                else if (distance < 200) { scaleY = .9; grayscale = .9 }
+                else if (distance < 300) { scaleY = .8; grayscale = .95 }
+                else { scaleY = .7; grayscale = 1 }
 
-                if (panel.style.height !== newHeight) {
+                if (panel.style.height !== scaleY) {
                     const tl = gsap.timeline();
                     tl
                         .to(panel, {
-                            scaleY: newHeight,
+                            scaleY: scaleY,
                             filter: `grayscale(${grayscale})`,
                             duration: 1.2,
                             ease: "power3.out"
                         }, 0) // ⬅️ inizia a tempo 0
                         .to(miniMapsRef.current[i], {
-                            scaleY: distance >= 300 ? "40%" : newHeight,
+                            scaleY: distance >= 300 ? .4 : scaleY,
                             ease: "none"
                         }, 0); // ⬅️ anche questa parte a tempo 0
                 }
@@ -112,23 +112,31 @@ export default function Section3() {
     const handleClick = (e) => {
         ctxRef.current = gsap.context(() => {
             const newTarget = e.currentTarget;
+            const transform = getComputedStyle(newTarget).transform;
+            console.log(transform)
+            let scaleY = 1;
+            if (transform !== 'none') {
+                const values = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                scaleY = parseFloat(values[3]);
+            }
             if (newTarget !== target) {
+
                 if (target) {
                     gsap.to(target, {
-                        scaleY: "initial",
+                        scaleY,
                         flexGrow: 1,
                         overwrite: "auto"
                     })
                 }
                 gsap.to(newTarget, {
-                    scaleY: "100%",
+                    scaleY: 1,
                     flexGrow: 4,
                     overwrite: "auto"
                 })
                 setTarget(newTarget)
             } else {
                 gsap.to(target, {
-                    scaleY: "initial",
+                    scaleY,
                     flexGrow: 1,
                     overwrite: "auto"
                 })
@@ -155,7 +163,7 @@ export default function Section3() {
                                 backgroundSize: "cover",
                                 backgroundPosition: "center",
                             }}
-                            className="panel h-[70%] grow will-change-[height, filter, grayscale, transform] cursor-pointer grayscale-100 hover:!grayscale-0 overflow-hidden">
+                            className="panel h-full grow will-change-[filter, grayscale, transform, grow, width] cursor-pointer grayscale-100 hover:!grayscale-0 overflow-hidden">
                         </div>
                     )}
                 </div>

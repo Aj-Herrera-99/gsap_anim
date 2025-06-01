@@ -18,32 +18,14 @@ export default function Section2() {
                 trigger: containerRef.current,
                 // pinnedContainer: containerRef.current,
                 pin: true,
-                scrub: true,
+                scrub: 0.5,
                 start: "top top",
                 end: `+=${totalWidth}px`, // o `${totalWidth}vw` se vuoi dinamico
             },
         });
-
-        // // Timeline per animare il fontSize di ogni pannello in base allo scroll
-        // const tl = gsap.timeline({
-        //   scrollTrigger: {
-        //     trigger: containerRef.current,
-        //     scrub: true,
-        //     start: "top top",
-        //     end: `+=${containerRef.current?.offsetWidth}px`,
-        //   },
-        // });
-
-        // panels.forEach((panel, i) => {
-        //   tl.set(panel, {
-        //     clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
-        //   })
-        //   tl.to(panel, { fontSize: "200px", clipPath: "polygon(0 24%, 100% 1%, 100% 100%, 0 72%)", duration: 1, ease: "circ1.out" }, i); // ogni step a +1
-        // });
-
     }, { scope: containerRef });
     return (
-        <div ref={containerRef} className="h-screen min-w-screen overflow-hidden border border-black">
+        <div ref={containerRef} className="h-screen w-screen overflow-hidden">
             <div className="flex w-[400vw] h-full">
                 {[1, 2, 3, 4].map((n, i) => (
                     <div
