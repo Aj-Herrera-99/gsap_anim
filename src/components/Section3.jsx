@@ -1,11 +1,11 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import { useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 const images = Array.from({ length: 18 }).map((_, i) => ({ src: `/images/${i + 1}.jpg`, id: i + 1 }))
 
 export default function Section3() {
-    let panelWidth = window.innerWidth < 768 ? 125 : 200
+    const panelWidth = useMemo(() => window.innerWidth < 768 ? 125 : 200, []);
     const sectionRef = useRef(null)
     const wrapperRef = useRef(null)
     const containerRef = useRef(null)
@@ -55,7 +55,14 @@ export default function Section3() {
                 const scaleY = (distance < 400) ? bellCurveScaled(distance) : 0.7;
                 const grayscale = fastStartSlowEnd(1 - scaleY, 100);
 
-                if (panel.style.height !== scaleY) {
+                const transform = getComputedStyle(panel).transform;
+                let initScaleY = 1;
+                if (transform !== 'none') {
+                    const values = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                    initScaleY = parseFloat(values[3]);
+                }
+
+                if (initScaleY !== scaleY) {
                     const tl = gsap.timeline();
                     tl
                         .to(panel, {
@@ -101,7 +108,6 @@ export default function Section3() {
         ctxRef.current = gsap.context(() => {
             const newTarget = e.currentTarget;
             const transform = getComputedStyle(newTarget).transform;
-            console.log(transform)
             let scaleY = 1;
             if (transform !== 'none') {
                 const values = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
@@ -133,6 +139,10 @@ export default function Section3() {
         }, containerRef)
 
     }
+
+    useEffect(() => {
+        return () => ctxRef.current?.revert();
+    }, []);
 
 
     return (
