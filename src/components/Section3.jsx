@@ -24,7 +24,7 @@ export default function Section3() {
             const rect = panel.getBoundingClientRect();
             const position = rect.left + rect.width / 2;
             const distance = Math.abs(position - center);
-            const scaleY = (distance < 400) ? bellCurveScaled(distance) : 0.7;
+            const scaleY = (distance < 400) ? bellCurveScaled(distance, window.innerWidth < 640 ? 100 : 200) : 0.7;
             const grayscale = fastStartSlowEnd(1 - scaleY, 100);
 
             gsap.set(panel, {
@@ -52,7 +52,7 @@ export default function Section3() {
                 const rect = panel.getBoundingClientRect();
                 const position = rect.left + rect.width / 2;
                 const distance = Math.abs(position - center);
-                const scaleY = (distance < 400) ? bellCurveScaled(distance) : 0.7;
+                const scaleY = (distance < 400) ? bellCurveScaled(distance, window.innerWidth < 640 ? 100 : 200) : 0.7;
                 const grayscale = fastStartSlowEnd(1 - scaleY, 100);
 
                 const transform = getComputedStyle(panel).transform;
@@ -186,7 +186,7 @@ export default function Section3() {
 const bellCurveScaled = (() => {
     const cache = new Map();
 
-    return function (x, mean = 0, width = 400, power = 2, precision = 3, min = 0.7) {
+    return function (x, width = 400, power = 2, mean = 0, precision = 3, min = 0.7) {
         // Genera una chiave univoca per i parametri della chiamata
         const key = `${x}|${mean}|${width}|${power}|${precision}|${min}`;
         if (cache.has(key)) {
