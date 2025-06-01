@@ -57,7 +57,7 @@ export default function Section3() {
 
                 const transform = getComputedStyle(panel).transform;
                 let initScaleY = 1;
-                if (transform !== 'none') {
+                if (transform && transform !== 'none') {
                     const values = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
                     initScaleY = parseFloat(values[3]);
                 }
@@ -109,7 +109,7 @@ export default function Section3() {
             const newTarget = e.currentTarget;
             const transform = getComputedStyle(newTarget).transform;
             let scaleY = 1;
-            if (transform !== 'none') {
+            if (transform && transform !== 'none') {
                 const values = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
                 scaleY = parseFloat(values[3]);
             }
