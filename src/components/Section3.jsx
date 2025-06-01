@@ -168,12 +168,12 @@ export default function Section3() {
             </div>
 
             {/* minimap */}
-            <div className="h-8 flex items-center space-x-1">
+            <div className="h-5 flex items-center space-x-1">
                 {images.map((_, i) =>
                     <div
                         key={i}
                         ref={el => (miniMapsRef.current[i] = el)}
-                        className="border min-h-1/2 border-black">
+                        className="border h-full border-black">
                     </div>
                 )}
             </div>
