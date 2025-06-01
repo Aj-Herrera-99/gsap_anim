@@ -24,14 +24,8 @@ export default function Section3() {
             const rect = panel.getBoundingClientRect();
             const position = rect.left + rect.width / 2;
             const distance = Math.abs(position - center);
-            let scaleY;
-            let grayscale;
-            if (distance < 75) {
-                scaleY = 1; grayscale = 0;
-            }
-            else if (distance < 200) { scaleY = .9; grayscale = .9 }
-            else if (distance < 300) { scaleY = .8; grayscale = .95 }
-            else { scaleY = .7; grayscale = 1 }
+            const scaleY = (distance < 400) ? bellCurveScaled(distance) : 0.7;
+            const grayscale = fastStartSlowEnd(1 - scaleY, 100);
 
             gsap.set(panel, {
                 flexGrow: 1,
@@ -58,14 +52,8 @@ export default function Section3() {
                 const rect = panel.getBoundingClientRect();
                 const position = rect.left + rect.width / 2;
                 const distance = Math.abs(position - center);
-                let scaleY;
-                let grayscale;
-                if (distance < 75) {
-                    scaleY = 1; grayscale = 0;
-                }
-                else if (distance < 200) { scaleY = .9; grayscale = .9 }
-                else if (distance < 300) { scaleY = .8; grayscale = .95 }
-                else { scaleY = .7; grayscale = 1 }
+                const scaleY = (distance < 400) ? bellCurveScaled(distance) : 0.7;
+                const grayscale = fastStartSlowEnd(1 - scaleY, 100);
 
                 if (panel.style.height !== scaleY) {
                     const tl = gsap.timeline();
@@ -73,8 +61,8 @@ export default function Section3() {
                         .to(panel, {
                             scaleY: scaleY,
                             filter: `grayscale(${grayscale})`,
-                            duration: 1.2,
-                            ease: "power3.out"
+                            duration: 2,
+                            ease: "power4.out"
                         }, 0) // ⬅️ inizia a tempo 0
                         .to(miniMapsRef.current[i], {
                             scaleY: distance >= 300 ? .4 : scaleY,
@@ -183,3 +171,44 @@ export default function Section3() {
         </div>
     )
 }
+
+
+const bellCurveScaled = (() => {
+    const cache = new Map();
+
+    return function (x, mean = 0, width = 400, power = 2, precision = 3, min = 0.7) {
+        // Genera una chiave univoca per i parametri della chiamata
+        const key = `${x}|${mean}|${width}|${power}|${precision}|${min}`;
+        if (cache.has(key)) {
+            return cache.get(key);
+        }
+
+        const exponent = -Math.pow(Math.abs((x - mean) / width), power);
+        const raw = Math.exp(exponent);
+        const scaled = min + (1 - min) * raw;
+        const result = Number(scaled.toFixed(precision));
+
+        cache.set(key, result);
+        return result;
+    };
+})();
+
+const fastStartSlowEnd = (() => {
+    const cache = new Map();
+
+    return function (x, base = 10) {
+        x = Number(x.toFixed(3))
+        const key = `${x}|${base}`;
+        if (cache.has(key)) return cache.get(key);
+
+        if (x <= 0) return 0;
+        if (x >= 1) return 1;
+
+        const numerator = Math.log(1 + (base - 1) * x);
+        const denominator = Math.log(base);
+        const result = numerator / denominator;
+
+        cache.set(key, result);
+        return result;
+    };
+})();
