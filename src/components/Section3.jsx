@@ -25,7 +25,7 @@ export default function Section3() {
             const position = rect.left + rect.width / 2;
             const distance = Math.abs(position - center);
             const scaleY = (distance < 400) ? bellCurveScaled(distance, window.innerWidth < 640 ? 100 : 200) : 0.7;
-            const grayscale = fastStartSlowEnd(1 - scaleY, 100);
+            const grayscale = (distance < 400) ? fastStartSlowEnd(1 - scaleY, 100) : 1;
 
             gsap.set(panel, {
                 flexGrow: 1,
@@ -53,7 +53,7 @@ export default function Section3() {
                 const position = rect.left + rect.width / 2;
                 const distance = Math.abs(position - center);
                 const scaleY = (distance < 400) ? bellCurveScaled(distance, window.innerWidth < 640 ? 100 : 200) : 0.7;
-                const grayscale = fastStartSlowEnd(1 - scaleY, 100);
+                const grayscale = (distance < 400) ? fastStartSlowEnd(1 - scaleY, 100) : 1;
 
                 const transform = getComputedStyle(panel).transform;
                 let initScaleY = 1;
