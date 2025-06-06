@@ -4,10 +4,10 @@ export default function Section6() {
     const sectionRef = useRef(null)
     return (
         <div ref={sectionRef} className="w-screen h-[100dvh] snap-start relative bg-[#1e2125] text-white">
-            <div class="overflow-x-auto snap-x snap-mandatory flex space-x-4">
+            <div className="overflow-x-auto snap-x snap-mandatory flex space-x-4">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((el, i) => (
 
-                    <div key={i} style={{ backgroundColor: `hsl(${el * 90}, 100%, 50%)` }} class="snap-start shrink-0 w-64 h-64 bg-red-300">{el}</div>
+                    <div key={i} style={{ backgroundColor: `hsl(${el * 90}, 100%, 50%)` }} className="snap-start shrink-0 w-64 h-64 bg-red-300">{el}</div>
                 ))}
             </div>
 
