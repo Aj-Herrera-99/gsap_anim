@@ -52,7 +52,9 @@ export default function Section3() {
                 const rect = panel.getBoundingClientRect();
                 const position = rect.left + rect.width / 2;
                 const distance = Math.abs(position - center);
+
                 const scaleY = (distance < 400) ? bellCurveScaled(distance, window.innerWidth < 640 ? 100 : 200) : 0.7;
+
                 const grayscale = (distance < 400) ? fastStartSlowEnd(1 - scaleY, 100) : 1;
 
                 const transform = getComputedStyle(panel).transform;
@@ -189,12 +191,12 @@ const bellCurveScaled = (() => {
     const cache = new Map();
 
     return function (x, width = 400, power = 2, mean = 0, precision = 3, min = 0.7) {
+        x = Math.floor((Math.floor(x) / 50)) * 50;
         // Genera una chiave univoca per i parametri della chiamata
         const key = `${x}|${mean}|${width}|${power}|${precision}|${min}`;
         if (cache.has(key)) {
             return cache.get(key);
         }
-
         const exponent = -Math.pow(Math.abs((x - mean) / width), power);
         const raw = Math.exp(exponent);
         const scaled = min + (1 - min) * raw;
@@ -209,16 +211,16 @@ const fastStartSlowEnd = (() => {
     const cache = new Map();
 
     return function (x, base = 10) {
-        x = Number(x.toFixed(3))
+        x = Math.floor(x);
         const key = `${x}|${base}`;
         if (cache.has(key)) return cache.get(key);
-
         if (x <= 0) return 0;
         if (x >= 1) return 1;
 
         const numerator = Math.log(1 + (base - 1) * x);
         const denominator = Math.log(base);
         const result = numerator / denominator;
+
 
         cache.set(key, result);
         return result;

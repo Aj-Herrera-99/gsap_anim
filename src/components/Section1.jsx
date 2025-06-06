@@ -36,7 +36,9 @@ export default function Section1() {
     }, { scope: ref })
     return (
         <div className="w-screen h-screen relative" ref={ref}>
-            {/* <button id="jumbo-btn" className="absolute text-[10rem] top-1/2 left-1/2 -translate-1/2 z-10 cursor-pointer hover:scale-100 scale-95 transition-all size-52 rounded-full flex justify-center items-center "><span className=" bg-[#e4e4e4]  text-black size-48 rounded-full flex justify-center items-center">us</span></button> */}
+            <button id="jumbo-btn" className="absolute text-[10rem] top-1/2 left-1/2 -translate-1/2 z-10 cursor-pointer hover:scale-100 scale-95 transition-all size-52 rounded-full flex justify-center items-center ">
+                <span className=" bg-[#e4e4e4]  text-black size-48 rounded-full flex justify-center items-center">us</span>
+            </button>
             <div id="jumbo" className="h-full w-full overflow-hidden relative">
                 <div className="absolute z-10 top-24 left-12 max-w-1/3">
                     <h1 className="text-6xl">Lorem, ipsum dolor.</h1>

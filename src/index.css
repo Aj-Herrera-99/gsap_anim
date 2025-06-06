@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -17,6 +18,59 @@
 
 body {
     overflow-x: hidden;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+@layer utilities {
+    .flex-center {
+        @apply flex justify-center items-center;
+    }
+}
+
+@layer components {
+    .btn {
+        @apply border rounded-sm cursor-pointer [&>span]:block [&>span]:px-4 [&>span]:py-2 [&>span]:w-full [&>span]:h-full;
+    }
+
+    .btn-1 {
+        @apply hover:scale-90 active:bg-amber-600 active:text-white hover:bg-amber-400 hover:text-black transition-all ease-in-out duration-500 hover:[&_.x-top]:-translate-y-1.5 hover:[&_.x-bottom]:translate-y-1.5 hover:[&_.x-left]:-translate-x-1.5 hover:[&_.x-right]:translate-x-1.5 hover:[&_div]:!opacity-100 [&_div]:rounded-xl  [&_div]:transition-all [&_div]:ease-in-out [&_div]:duration-500 relative;
+    }
+
+    .btn-content-1 {
+        @apply hover:scale-125 transition-all ease-in-out duration-500;
+    }
+
+    .btn-2 {
+        @apply hover:[&>.btn-overlay-2]:!-translate-y-[10%] hover:[&>.btn-overlay-2]:!translate-x-1/2 overflow-hidden active:[&>.btn-overlay-2]:bg-green-800 active:text-black hover:border-transparent hover:italic hover:text-black transition-colors duration-400;
+    }
+
+    .btn-content-2 {
+        @apply relative z-[2] hover:scale-125 transition-all ease-in duration-200;
+    }
+
+    .btn-overlay-2 {
+        @apply bg-green-500 absolute w-[200%] h-[115%] translate-y-full right-0 top-0 transition-all duration-750 ease-out z-[1];
+        clip-path: polygon(
+            0% 0%,
+            10% 10%,
+            20% 0%,
+            30% 10%,
+            40% 0%,
+            50% 10%,
+            60% 0%,
+            70% 10%,
+            80% 0%,
+            90% 10%,
+            100% 0%,
+            100% 100%,
+            0% 100%
+        );
+
+        /* clip-path: path("M 10,5 L 20,0 L 20,100 L 10,5 Z"); */
+    }
 }
 
 @property --fill {
@@ -35,4 +89,39 @@ body {
         transparent var(--fill)
     );
     transition: --fill 0.6s ease-in-out;
+}
+
+#section-5 {
+    perspective: 250px;
+}
+/* animation-range: ; */
+
+#box-red,
+.box {
+    transform-style: preserve-3d;
+    animation: rotate 1s ease-out;
+    animation-timeline: view();
+    /* animation-range: entry 0% entry 100%; */
+}
+
+@keyframes rotate {
+    0% {
+        opacity: 0;
+    }
+    30% {
+        transform: rotateZ(20deg) rotateX(-90deg);
+        opacity: 0.05;
+    }
+    50% {
+        transform: rotate(0deg);
+        opacity: 1;
+        text-shadow: white 0px 0px 10px, white 0px 0px 20px;
+    }
+    70% {
+        transform: rotateZ(-20deg) rotateX(-90deg);
+        opacity: 0.05;
+    }
+    100% {
+        opacity: 0;
+    }
 }
