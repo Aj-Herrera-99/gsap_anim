@@ -68,9 +68,27 @@ export default function Section3({ id, className }) {
                 const scaleY = distance < 400 ? bellCurveScaled(distance, responsiveFactor) : 0.7;
                 const grayscale = distance < 400 ? fastStartSlowEnd(1 - scaleY, 100) : 1;
 
-                scaleSetters[i](scaleY);
-                filterSetters[i](`grayscale(${grayscale})`);
-                miniMapSetters[i](distance >= 300 ? 0.4 : scaleY);
+                const transform = getComputedStyle(panel).transform;
+                let initScaleY = 1;
+                if (transform && transform !== 'none') {
+                    const values = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                    initScaleY = parseFloat(values[3]);
+                }
+
+                if (initScaleY !== scaleY) {
+                    scaleSetters[i](scaleY);
+                    filterSetters[i](`grayscale(${grayscale})`);
+                    miniMapSetters[i](distance >= 300 ? 0.4 : scaleY);
+                    // gsap.to(panel, {
+                    //     scaleY: scaleY,
+                    //     filter: `grayscale(${grayscale})`,
+                    //     duration: 2,
+                    //     ease: "power4.out"
+                    // }); gsap.to(miniMapsRef.current[i], {
+                    //     scaleY: distance >= 300 ? .4 : scaleY,
+                    //     ease: "none"
+                    // });
+                }
             });
         };
 

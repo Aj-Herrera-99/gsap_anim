@@ -115,7 +115,7 @@ const FirstPage = () => {
     }, { scope: ref })
 
     return <div ref={ref} className="z-10 relative">
-        <section id="first-page" className="pt-10 w-screen min-h-screen overflow-x-hidden flex flex-col justify-between px-1 bg-red-950/70 text-[#e8e9ee]">
+        <section id="first-page" className="pt-10 w-screen min-h-[100dvh] overflow-x-hidden flex flex-col justify-between px-1 bg-red-950/70 text-[#e8e9ee]">
             <AnimatedCounter />
             <div className="flex justify-center text-7xl font-black items-center h-2/5">
                 <JumboText />
@@ -166,7 +166,7 @@ const JumboText = () => {
 }
 
 const BackgroundFirstVideo = () => {
-    return <video id="first-video" className="fixed top-0 left-0 w-screen h-screen object-cover" autoPlay loop muted playsInline>
+    return <video id="first-video" className="fixed top-0 left-0 w-screen h-[100dvh] object-cover" autoPlay loop muted playsInline>
         <source src="/videos/1.mp4" type="video/mp4" />
         Il tuo browser non supporta il tag video.
     </video>
