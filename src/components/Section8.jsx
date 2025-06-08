@@ -24,7 +24,7 @@ export default function Section8() {
             .to("#first-video", { x: 0, y: 0, rotateZ: 0, ease: "power1.out", duration: 1.5, }, 3.5)
     }, { scope: ref })
 
-    return <div ref={ref} className="bg-[#dd321b] uppercase">
+    return <div ref={ref} className="bg-[#ff6320] uppercase">
         <Navbar />
         <FirstPage />
         <BackgroundFirstVideo />
@@ -33,24 +33,6 @@ export default function Section8() {
     </div>
 }
 
-const SecondPage = () => {
-    const ref = useRef(null)
-
-    useGSAP(() => {
-        gsap.set("#second-page", {
-            x: "20%", y: "100%", rotate: -10,
-        })
-
-        gsap.to("#second-page", {
-            x: 0, y: 0, rotate: 0, scrollTrigger: { trigger: ref.current, start: `top bottom`, }
-        })
-
-    }, { scope: ref })
-
-    return <div ref={ref} className="relative">
-        <Section3 id="second-page" className="absolute top-0 left-0 bg-blue-900/65" />
-    </div>
-}
 
 const Navbar = () => {
     const ctxRef = useRef()
@@ -73,12 +55,17 @@ const Navbar = () => {
         return () => ctxRef.current?.revert();
     }, []);
 
-    return <nav className="flex justify-between items-center z-40 px-1 fixed w-screen top-0 left-0">
+    return <nav className="flex justify-between items-center z-40 px-2 fixed w-screen top-0 left-0">
         <div id="nav-logo" className="lg:w-[22%]">
             <h1 className="text-2xl font-black">the line</h1>
         </div>
 
-        <div className=" max-lg:hidden flex items-center grow-2">
+        <div className="lg:hidden nav-el space-y-1.5">
+            <div className="border-2 w-13"></div>
+            <div className="border-2 w-13"></div>
+        </div>
+
+        <div className="max-lg:hidden flex items-center grow-2">
             <div id="nav-info" className="grow flex gap-12 xl:gap-16 text-[10px] whitespace-nowrap">
                 <span className="nav-el flex items-center gap-1">
                     <span className="nav-circle inline-block rounded-full size-2 bg-black" />
@@ -115,7 +102,7 @@ const FirstPage = () => {
     }, { scope: ref })
 
     return <div ref={ref} className="z-10 relative">
-        <section id="first-page" className="pt-10 w-screen min-h-[100dvh] overflow-x-hidden flex flex-col justify-between px-1 bg-red-950/70 text-[#e8e9ee]">
+        <section id="first-page" className="pt-10 w-screen min-h-[100dvh] overflow-x-hidden flex flex-col justify-between px-2 bg-red-950/70 text-[#e8e9ee]">
             <AnimatedCounter />
             <div className="flex justify-center text-7xl font-black items-center h-2/5">
                 <JumboText />
@@ -163,6 +150,25 @@ const JumboText = () => {
         <div ref={ref} className="bg-[#e8e9ee] h-full w-full flex justify-center items-center whitespace-nowrap overflow-hidden ">
             <span className="text-fluid">the line</span>
         </div>)
+}
+
+const SecondPage = () => {
+    const ref = useRef(null)
+
+    useGSAP(() => {
+        gsap.set("#second-page", {
+            x: "20%", y: "100%", rotate: -10,
+        })
+
+        gsap.to("#second-page", {
+            x: 0, y: 0, rotate: 0, scrollTrigger: { trigger: ref.current, start: `top bottom`, }
+        })
+
+    }, { scope: ref })
+
+    return <div ref={ref} className="relative">
+        <Section3 id="second-page" className="absolute top-0 left-0 bg-blue-900/65" />
+    </div>
 }
 
 const BackgroundFirstVideo = () => {
