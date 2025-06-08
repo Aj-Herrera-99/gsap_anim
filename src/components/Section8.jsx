@@ -1,6 +1,6 @@
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
-import { Fragment, useEffect, useRef } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import { Link, NavLink } from "react-router"
 import { navLinks } from "../config/config"
 import Section3 from "./Section3"
@@ -21,16 +21,43 @@ export default function Section8() {
             .to(".nav-el", { opacity: 1, duration: 0.05, ...navElCommonVars }, 0.3)
             .to(".nav-el", { opacity: 0, duration: 0.1, ...navElCommonVars }, 0.35)
             .to(".nav-el", { opacity: 1, duration: 0.02, ...navElCommonVars }, 0.45)
-            .to("#first-video", { x: 0, y: 0, rotateZ: 0, ease: "power1.out", duration: 1.5, }, 3.5)
+            .to("#first-video", { x: 0, y: 0, rotateZ: 0, ease: "power1.out", duration: .75, }, 3.5)
     }, { scope: ref })
 
     return <div ref={ref} className="bg-[#ff6320] uppercase">
+        <PathTracker />
         <Navbar />
         <FirstPage />
         <BackgroundFirstVideo />
-        <section className="relative flex justify-center items-center text-9xl font-bold text-white">no one's safe</section>
+        <section className="relative flex justify-center items-center pb-32 text-9xl font-bold text-white">no one's safe</section>
         <SecondPage />
     </div>
+}
+
+const PathTracker = () => {
+
+    const [visible, setVisible] = useState(true);
+
+    useEffect(() => {
+        const moveX = gsap.quickTo("#path-tracker", "x", { duration: 0.3, ease: "power2.out" });
+        const moveY = gsap.quickTo("#path-tracker", "y", { duration: 0.3, ease: "power2.out" });
+
+        const pathTracking = (e) => {
+            moveX(e.clientX + 15);
+            moveY(e.clientY);
+            if (e.clientY < 30) {
+                setVisible(false)
+            } else { setVisible(true) }
+        };
+
+        window.addEventListener("mousemove", pathTracking);
+
+        return () => {
+            window.removeEventListener("mousemove", pathTracking);
+        };
+    }, []);
+
+    return <div id="path-tracker" className={`${!visible && "opacity-0"} absolute top-0 left-0 z-30 text-[10px] font-semibold`}>scroll to explore</div>
 }
 
 
@@ -129,7 +156,7 @@ const AnimatedCounter = ({ end = 30, duration = 2 }) => {
 
     }, { scope: ref, dependencies: [end, duration] })
 
-    return <p ref={ref} className="text-6xl lg:text-[150px] font-semibold whitespace-nowrap lowercase">
+    return <p ref={ref} className="text-6xl lg:text-[150px] font-semibold whitespace-nowrap lowercase pointer-events-none">
         <span ref={counterRef} className="nav-el">0</span>
         <span className="nav-el">/{end} fps</span>
     </p>;
@@ -157,16 +184,16 @@ const SecondPage = () => {
 
     useGSAP(() => {
         gsap.set("#second-page", {
-            x: "20%", y: "100%", rotate: -10,
+            x: "20%", y: "120%", rotate: -20,
         })
 
         gsap.to("#second-page", {
-            x: 0, y: 0, rotate: 0, scrollTrigger: { trigger: ref.current, start: `top bottom`, }
+            x: 0, y: 0, rotate: 0, duration: 2, scrollTrigger: { trigger: ref.current, start: `top bottom` }
         })
 
-    }, { scope: ref })
+    }, { scope: ref, revertOnUpdate: true })
 
-    return <div ref={ref} className="relative">
+    return <div ref={ref} className="relative h-screen">
         <Section3 id="second-page" className="absolute top-0 left-0 bg-blue-900/65" />
     </div>
 }
