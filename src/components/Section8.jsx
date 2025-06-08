@@ -25,7 +25,9 @@ export default function Section8() {
     }, { scope: ref })
 
     return <div ref={ref} className="bg-[#ff6320] uppercase">
-        <PathTracker />
+        {window.innerWidth >= 1024 &&
+            <PathTracker />
+        }
         <Navbar />
         <FirstPage />
         <BackgroundFirstVideo />
@@ -43,6 +45,8 @@ const PathTracker = () => {
         const moveY = gsap.quickTo("#path-tracker", "y", { duration: 0.3, ease: "power2.out" });
 
         const pathTracking = (e) => {
+            const { top, } = window.document.documentElement.getBoundingClientRect();
+            console.log(top)
             moveX(e.clientX + 15);
             moveY(e.clientY);
             if (e.clientY < 30) {
@@ -51,9 +55,12 @@ const PathTracker = () => {
         };
 
         window.addEventListener("mousemove", pathTracking);
+        // window.addEventListener("scroll", pathTracking);
+
 
         return () => {
             window.removeEventListener("mousemove", pathTracking);
+            // window.removeEventListener("scroll", pathTracking);
         };
     }, []);
 
