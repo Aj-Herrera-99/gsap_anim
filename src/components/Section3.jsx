@@ -58,6 +58,10 @@ export default function Section3({ id, className }) {
         // const scaleSetters = panels.map(panel => gsap.quickSetter(panel, "scaleY"));
         // const filterSetters = panels.map(panel => gsap.quickSetter(panel, "filter"));
         // const miniMapSetters = miniMaps.map(el => gsap.quickSetter(el, "scaleY"));
+        // Setup setters per performance
+        const scaleSetters = panels.map(panel => gsap.quickTo(panel, "scaleY"));
+        const filterSetters = panels.map(panel => gsap.quickSetter(panel, "filter"));
+        const miniMapSetters = miniMaps.map(el => gsap.quickTo(el, "scaleY"));
 
         const updatePanelVisuals = () => {
             panels.forEach((panel, i) => {
@@ -76,18 +80,18 @@ export default function Section3({ id, className }) {
                 }
 
                 if (initScaleY !== scaleY) {
-                    // scaleSetters[i](scaleY);
-                    // filterSetters[i](`grayscale(${grayscale})`);
-                    // miniMapSetters[i](distance >= 300 ? 0.4 : scaleY);
-                    gsap.to(panel, {
-                        scaleY: scaleY,
-                        filter: `grayscale(${grayscale})`,
-                        duration: 2,
-                        ease: "power4.out"
-                    }); gsap.to(miniMapsRef.current[i], {
-                        scaleY: distance >= 300 ? .4 : scaleY,
-                        ease: "none"
-                    });
+                    scaleSetters[i](scaleY);
+                    filterSetters[i](`grayscale(${grayscale})`);
+                    miniMapSetters[i](distance >= 300 ? 0.4 : scaleY);
+                    // gsap.to(panel, {
+                    //     scaleY: scaleY,
+                    //     filter: `grayscale(${grayscale})`,
+                    //     duration: 2,
+                    //     ease: "power4.out"
+                    // }); gsap.to(miniMapsRef.current[i], {
+                    //     scaleY: distance >= 300 ? .4 : scaleY,
+                    //     ease: "none"
+                    // });
                 }
             });
         };

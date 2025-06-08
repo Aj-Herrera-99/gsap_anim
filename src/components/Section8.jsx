@@ -12,6 +12,7 @@ export default function Section8() {
     useGSAP(() => {
         gsap.set(".nav-el, .nav-separator, #nav-logo", { opacity: 0, });
         gsap.set("#first-video", { x: "-20%", y: "130%", rotateZ: 10, })
+        gsap.set(document.body, { overflowY: "hidden" })
 
         const navElCommonVars = { stagger: 0.07, ease: "power1.out" };
 
@@ -22,6 +23,7 @@ export default function Section8() {
             .to(".nav-el", { opacity: 0, duration: 0.1, ...navElCommonVars }, 0.35)
             .to(".nav-el", { opacity: 1, duration: 0.02, ...navElCommonVars }, 0.45)
             .to("#first-video", { x: 0, y: 0, rotateZ: 0, ease: "power1.out", duration: .75, }, 3.5)
+            .to(document.body, { overflowY: "auto" }, 5)
     }, { scope: ref })
 
     return <div ref={ref} className="bg-[#ff6320] uppercase">
@@ -47,7 +49,7 @@ const PathTracker = () => {
         const pathTracking = (e) => {
             const { top, } = window.document.documentElement.getBoundingClientRect();
             moveX(e.clientX + 15);
-            moveY(e.clientY - top);
+            moveY(e.clientY + 12 - top);
             if (e.clientY < 30) {
                 setVisible(false)
             } else { setVisible(true) }
@@ -60,7 +62,7 @@ const PathTracker = () => {
         };
     }, []);
 
-    return <div id="path-tracker" className={`${!visible && "opacity-0"} absolute top-0 left-0 z-30 text-[10px] font-semibold`}>scroll to explore</div>
+    return <div id="path-tracker" className={`${!visible && "opacity-0"} absolute -top-[12px] left-0 z-30 text-[10px] font-semibold`}>scroll to explore</div>
 }
 
 
@@ -191,10 +193,10 @@ const SecondPage = () => {
         })
 
         gsap.to("#second-page", {
-            x: 0, y: 0, rotate: 0, duration: 2, scrollTrigger: { trigger: ref.current, start: `top bottom` }
+            x: 0, y: 0, rotate: 0, duration: 1.5, scrollTrigger: { trigger: ref.current, start: `top bottom` }
         })
 
-    }, { scope: ref, revertOnUpdate: true })
+    }, { scope: ref })
 
     return <div ref={ref} className="relative h-screen">
         <Section3 id="second-page" className="absolute top-0 left-0 bg-blue-900/65" />
