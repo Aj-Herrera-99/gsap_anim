@@ -46,21 +46,17 @@ const PathTracker = () => {
 
         const pathTracking = (e) => {
             const { top, } = window.document.documentElement.getBoundingClientRect();
-            console.log(top)
             moveX(e.clientX + 15);
-            moveY(e.clientY);
+            moveY(e.clientY - top);
             if (e.clientY < 30) {
                 setVisible(false)
             } else { setVisible(true) }
         };
 
         window.addEventListener("mousemove", pathTracking);
-        // window.addEventListener("scroll", pathTracking);
-
 
         return () => {
             window.removeEventListener("mousemove", pathTracking);
-            // window.removeEventListener("scroll", pathTracking);
         };
     }, []);
 
