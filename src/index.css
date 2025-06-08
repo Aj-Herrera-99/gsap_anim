@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
+@theme {
+    --breakpoint-3xl: 1900px;
+}
+
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
@@ -15,9 +19,21 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+/* hide page scrollbar */
+html {
+    scrollbar-width: none;
+} /* Firefox */
+body {
+    -ms-overflow-style: none;
+} /* IE and Edge */
+body::-webkit-scrollbar,
+body::-webkit-scrollbar-button {
+    display: none;
+} /* Chrome */
+/* end hide page scrollbar */
 
 body {
-    overflow-x: hidden !important;
+    overflow-x: hidden;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-weight: normal;
@@ -68,8 +84,6 @@ body {
             100% 100%,
             0% 100%
         );
-
-        /* clip-path: path("M 10,5 L 20,0 L 20,100 L 10,5 Z"); */
     }
 }
 
@@ -123,5 +137,79 @@ body {
     }
     100% {
         opacity: 0;
+    }
+}
+
+/* =============================================================================
+* SECTION 8
+============================================================================= */
+
+@layer utilities {
+    a.nav-el:hover {
+        animation: flicker 0.2s;
+    }
+    #nav-info-link span:first-child,
+    #nav-info-link span:last-child {
+        transition-delay: 0.2s;
+    }
+    #nav-info-link:hover span:first-child {
+        opacity: 0;
+    }
+    #nav-info-link:hover span:last-child {
+        opacity: 1 !important;
+    }
+    .shrink-anim span.nav-circle {
+        animation: shrink 0.3s ease forwards;
+    }
+    .grow-anim span.nav-circle {
+        animation: grow 0.3s ease forwards;
+    }
+    .text-fluid {
+        font-size: clamp(1rem, 100vw, 22rem);
+        @media screen and (max-width: 1600px) {
+            font-size: clamp(1rem, 100vw, 19.5rem);
+        }
+        @media screen and (max-width: 1280px) {
+            font-size: clamp(1rem, 100vw, 16rem);
+        }
+        @media screen and (max-width: 1024px) {
+            font-size: clamp(1rem, 100vw, 10rem);
+        }
+        @media screen and (max-width: 640px) {
+            font-size: clamp(1rem, 100vw, 5rem);
+        }
+    }
+
+    @keyframes flicker {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @keyframes shrink {
+        from {
+            width: 12px;
+            height: 12px;
+            scale: 1;
+        }
+        to {
+            width: 0;
+            height: 0;
+            scale: 0;
+        }
+    }
+    @keyframes grow {
+        from {
+            width: 0;
+            height: 0;
+            scale: 0;
+        }
+        to {
+            width: 12px;
+            height: 12px;
+            scale: 1;
+        }
     }
 }

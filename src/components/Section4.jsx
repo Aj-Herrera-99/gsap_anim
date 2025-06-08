@@ -59,7 +59,7 @@ export default function Section4() {
                     REACT+GSAP
                 </div>
             </div>
-{/* 
+            {/* 
             <div id="2" onMouseEnter={handleMouseEnter} onTouchStart={handleMouseEnter} className="cursor-pointer relative">
                 <div id="sx2" className="sx absolute leading-[91px] h-12 inset-0 text-9xl z-10">
                     <p className="-translate-y-1">REACT+GSAP</p>

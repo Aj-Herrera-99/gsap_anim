@@ -8,6 +8,7 @@ import Section4 from "./components/Section4"
 import Section5 from "./components/Section5"
 import Section6 from "./components/Section6"
 import Section7 from "./components/Section7"
+import Section8 from "./components/Section8"
 
 gsap.registerPlugin(useGSAP)
 gsap.registerPlugin(ScrollTrigger)
@@ -15,13 +16,14 @@ gsap.registerPlugin(ScrollTrigger)
 function App() {
   return (
     <>
-      <Section1 />
-      <Section2 />
-      <Section3 />
-      <Section4 />
+      {/* <Section1 />
+      <Section2 />*/}
+      {/* <Section3 /> */}
+      {/* <Section4 />
       <Section5 />
       <Section6 />
-      <Section7 />
+      <Section7 />  */}
+      <Section8 />
     </>
   )
 }

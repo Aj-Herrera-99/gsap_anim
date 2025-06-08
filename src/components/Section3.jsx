@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 const images = Array.from({ length: 18 }).map((_, i) => ({ src: `/images/${i + 1}.jpg`, id: i + 1 }))
 
-export default function Section3() {
+export default function Section3({ id, className }) {
     const panelWidth = useMemo(() => window.innerWidth < 768 ? 125 : 200, []);
     const sectionRef = useRef(null)
     const wrapperRef = useRef(null)
@@ -40,70 +40,109 @@ export default function Section3() {
 
     // * ANIMS BASED ON SCROLL
     useGSAP(() => {
-        if (!sectionRef.current || !containerRef.current || !wrapperRef.current || !panelsRef.current || !miniMapsRef.current) return
+        const section = sectionRef.current;
+        const container = containerRef.current;
+        const wrapper = wrapperRef.current;
         const panels = panelsRef.current;
-        const totalWidth = containerRef.current.offsetWidth;
-        const wrapperWidth = wrapperRef.current.offsetWidth;
+        const miniMaps = miniMapsRef.current;
 
-        let rafId = null;
-        const updateHeights = () => {
-            const center = window.innerWidth / 2;
+        if (!section || !container || !wrapper || !panels || !miniMaps) return;
+
+        const totalWidth = container.offsetWidth;
+        const wrapperWidth = wrapper.offsetWidth;
+
+        const center = window.innerWidth / 2;
+        const responsiveFactor = window.innerWidth < 640 ? 100 : 200;
+
+        // Setup setters per performance
+        const scaleSetters = panels.map(panel => gsap.quickSetter(panel, "scaleY"));
+        const filterSetters = panels.map(panel => gsap.quickSetter(panel, "filter"));
+        const miniMapSetters = miniMaps.map(el => gsap.quickSetter(el, "scaleY"));
+
+        const updatePanelVisuals = () => {
             panels.forEach((panel, i) => {
                 const rect = panel.getBoundingClientRect();
                 const position = rect.left + rect.width / 2;
                 const distance = Math.abs(position - center);
 
-                const scaleY = (distance < 400) ? bellCurveScaled(distance, window.innerWidth < 640 ? 100 : 200) : 0.7;
+                const scaleY = distance < 400 ? bellCurveScaled(distance, responsiveFactor) : 0.7;
+                const grayscale = distance < 400 ? fastStartSlowEnd(1 - scaleY, 100) : 1;
 
-                const grayscale = (distance < 400) ? fastStartSlowEnd(1 - scaleY, 100) : 1;
-
-                const transform = getComputedStyle(panel).transform;
-                let initScaleY = 1;
-                if (transform && transform !== 'none') {
-                    const values = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
-                    initScaleY = parseFloat(values[3]);
-                }
-
-                if (initScaleY !== scaleY) {
-                    const tl = gsap.timeline();
-                    tl
-                        .to(panel, {
-                            scaleY: scaleY,
-                            filter: `grayscale(${grayscale})`,
-                            duration: 2,
-                            ease: "power4.out"
-                        }, 0) // ⬅️ inizia a tempo 0
-                        .to(miniMapsRef.current[i], {
-                            scaleY: distance >= 300 ? .4 : scaleY,
-                            ease: "none"
-                        }, 0); // ⬅️ anche questa parte a tempo 0
-                }
+                scaleSetters[i](scaleY);
+                filterSetters[i](`grayscale(${grayscale})`);
+                miniMapSetters[i](distance >= 300 ? 0.4 : scaleY);
             });
-
-            rafId = null; // Reset after update
         };
 
         gsap.to(panels, {
-            x: - totalWidth + wrapperWidth - wrapperWidth / 2 + panels[0].offsetWidth / 2, // wrapperWidth / 2 perche devo spostare ulteriormente a sx di meta wrapper per via di pl-[50%]
-            ease: "none",
+            x: -totalWidth + wrapperWidth - wrapperWidth / 2 + panels[0].offsetWidth / 2, // wrapperWidth / 2 perche devo spostare ulteriormente a sx di meta wrapper per via di pl-[50%]
+            ease: "sine.out",
             scrollTrigger: {
-                trigger: sectionRef.current,
+                trigger: section,
                 pin: true,
-                scrub: 0.3,
-                start: `top top`,
-                end: `+=${totalWidth * 1.2}px`, // multiplier arbitrario
-                onUpdate: () => {
-                    if (!rafId) {
-                        rafId = requestAnimationFrame(updateHeights);
-                    }
-                }
+                scrub: true,
+                start: "top top",
+                end: `+=${totalWidth * 2}px`,
+                onUpdate: updatePanelVisuals,
             },
         });
-
-        return () => {
-            if (rafId) cancelAnimationFrame(rafId);
-        };
     }, { scope: containerRef });
+
+    // useGSAP(() => {
+    //     if (!sectionRef.current || !containerRef.current || !wrapperRef.current || !panelsRef.current || !miniMapsRef.current) return
+    //     const panels = panelsRef.current;
+    //     const totalWidth = containerRef.current.offsetWidth;
+    //     const wrapperWidth = wrapperRef.current.offsetWidth;
+    //     const updateHeights = () => {
+    //         const center = window.innerWidth / 2;
+    //         panels.forEach((panel, i) => {
+    //             const rect = panel.getBoundingClientRect();
+    //             const position = rect.left + rect.width / 2;
+    //             const distance = Math.abs(position - center);
+
+    //             const scaleY = (distance < 400) ? bellCurveScaled(distance, window.innerWidth < 640 ? 100 : 200) : 0.7;
+
+    //             const grayscale = (distance < 400) ? fastStartSlowEnd(1 - scaleY, 100) : 1;
+
+    //             const transform = getComputedStyle(panel).transform;
+    //             let initScaleY = 1;
+    //             if (transform && transform !== 'none') {
+    //                 const values = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+    //                 initScaleY = parseFloat(values[3]);
+    //             }
+
+    //             if (initScaleY !== scaleY) {
+    //                 const tl = gsap.timeline();
+    //                 tl
+    //                     .to(panel, {
+    //                         scaleY: scaleY,
+    //                         filter: `grayscale(${grayscale})`,
+    //                         duration: 2,
+    //                         ease: "power4.out"
+    //                     }, 0) // ⬅️ inizia a tempo 0
+    //                     .to(miniMapsRef.current[i], {
+    //                         scaleY: distance >= 300 ? .4 : scaleY,
+    //                         ease: "none"
+    //                     }, 0); // ⬅️ anche questa parte a tempo 0
+    //             }
+    //         });
+    //     };
+
+    //     gsap.to(panels, {
+    //         x: - totalWidth + wrapperWidth - wrapperWidth / 2 + panels[0].offsetWidth / 2, // wrapperWidth / 2 perche devo spostare ulteriormente a sx di meta wrapper per via di pl-[50%]
+    //         ease: "none",
+    //         scrollTrigger: {
+    //             trigger: sectionRef.current,
+    //             pin: true,
+    //             scrub: 0.3,
+    //             start: `top top`,
+    //             end: `+=${totalWidth * 1.2}px`, // multiplier arbitrario
+    //             onUpdate: () => {
+    //                 updateHeights()
+    //             }
+    //         },
+    //     });
+    // }, { scope: containerRef });
 
     // * ANIMS BASED ON EVENTS
     const handleClick = (e) => {
@@ -150,7 +189,7 @@ export default function Section3() {
 
 
     return (
-        <div ref={sectionRef} className="h-screen min-w-screen flex flex-col py-6 items-center justify-between space-y-6">
+        <div id={id} ref={sectionRef} className={`${className} h-screen w-screen min-w-screen flex flex-col py-6 items-center justify-between space-y-6`}>
 
             {/* panels */}
             <div ref={wrapperRef} className="grow w-[90%] overflow-hidden">
@@ -191,7 +230,7 @@ const bellCurveScaled = (() => {
     const cache = new Map();
 
     return function (x, width = 400, power = 2, mean = 0, precision = 3, min = 0.7) {
-        x = Math.floor((Math.floor(x) / 50)) * 50;
+        x = Math.floor((Math.floor(x) / 10)) * 10;
         // Genera una chiave univoca per i parametri della chiamata
         const key = `${x}|${mean}|${width}|${power}|${precision}|${min}`;
         if (cache.has(key)) {

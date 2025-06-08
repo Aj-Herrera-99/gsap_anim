@@ -41,7 +41,7 @@ export default function Section7() {
             rotateZ: 0,
             x: 0,
             y: 0,
-            ease:"power3.out"
+            ease: "power3.out"
 
         }, 0).to(secondDivRef.current, {
             rotateZ: -10,
