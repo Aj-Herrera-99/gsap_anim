@@ -54,10 +54,6 @@ export default function Section3({ id, className, style={} }) {
         const center = window.innerWidth / 2;
         const responsiveFactor = window.innerWidth < 640 ? 100 : 200;
 
-        // // Setup setters per performance
-        // const scaleSetters = panels.map(panel => gsap.quickSetter(panel, "scaleY"));
-        // const filterSetters = panels.map(panel => gsap.quickSetter(panel, "filter"));
-        // const miniMapSetters = miniMaps.map(el => gsap.quickSetter(el, "scaleY"));
         // Setup setters per performance
         const scaleSetters = panels.map(panel => gsap.quickTo(panel, "scaleY"));
         const filterSetters = panels.map(panel => gsap.quickSetter(panel, "filter"));
@@ -100,7 +96,7 @@ export default function Section3({ id, className, style={} }) {
             x: -totalWidth + wrapperWidth - wrapperWidth / 2 + panels[0].offsetWidth / 2, // wrapperWidth / 2 perche devo spostare ulteriormente a sx di meta wrapper per via di pl-[50%]
             ease: "sine.out",
             scrollTrigger: {
-                pinnedContainer: "#container_2",
+                preventOverlaps: true,
                 trigger: section,
                 pin: true,
                 scrub: true,
@@ -110,62 +106,6 @@ export default function Section3({ id, className, style={} }) {
             },
         });
     }, { scope: containerRef });
-
-    // useGSAP(() => {
-    //     if (!sectionRef.current || !containerRef.current || !wrapperRef.current || !panelsRef.current || !miniMapsRef.current) return
-    //     const panels = panelsRef.current;
-    //     const totalWidth = containerRef.current.offsetWidth;
-    //     const wrapperWidth = wrapperRef.current.offsetWidth;
-    //     const updateHeights = () => {
-    //         const center = window.innerWidth / 2;
-    //         panels.forEach((panel, i) => {
-    //             const rect = panel.getBoundingClientRect();
-    //             const position = rect.left + rect.width / 2;
-    //             const distance = Math.abs(position - center);
-
-    //             const scaleY = (distance < 400) ? bellCurveScaled(distance, window.innerWidth < 640 ? 100 : 200) : 0.7;
-
-    //             const grayscale = (distance < 400) ? fastStartSlowEnd(1 - scaleY, 100) : 1;
-
-    //             const transform = getComputedStyle(panel).transform;
-    //             let initScaleY = 1;
-    //             if (transform && transform !== 'none') {
-    //                 const values = transform.match(/matrix.*\((.+)\)/)[1].split(', ');
-    //                 initScaleY = parseFloat(values[3]);
-    //             }
-
-    //             if (initScaleY !== scaleY) {
-    //                 const tl = gsap.timeline();
-    //                 tl
-    //                     .to(panel, {
-    //                         scaleY: scaleY,
-    //                         filter: `grayscale(${grayscale})`,
-    //                         duration: 2,
-    //                         ease: "power4.out"
-    //                     }, 0) // ⬅️ inizia a tempo 0
-    //                     .to(miniMapsRef.current[i], {
-    //                         scaleY: distance >= 300 ? .4 : scaleY,
-    //                         ease: "none"
-    //                     }, 0); // ⬅️ anche questa parte a tempo 0
-    //             }
-    //         });
-    //     };
-
-    //     gsap.to(panels, {
-    //         x: - totalWidth + wrapperWidth - wrapperWidth / 2 + panels[0].offsetWidth / 2, // wrapperWidth / 2 perche devo spostare ulteriormente a sx di meta wrapper per via di pl-[50%]
-    //         ease: "none",
-    //         scrollTrigger: {
-    //             trigger: sectionRef.current,
-    //             pin: true,
-    //             scrub: 0.3,
-    //             start: `top top`,
-    //             end: `+=${totalWidth * 1.2}px`, // multiplier arbitrario
-    //             onUpdate: () => {
-    //                 updateHeights()
-    //             }
-    //         },
-    //     });
-    // }, { scope: containerRef });
 
     // * ANIMS BASED ON EVENTS
     const handleClick = (e) => {

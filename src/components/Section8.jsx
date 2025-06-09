@@ -36,6 +36,53 @@ export default function Section8() {
         <BackgroundFirstVideo />
         <section className="relative flex justify-center items-center pb-32 text-9xl font-bold text-white">no one's safe</section>
         <SecondPage />
+
+        <ThirdPage />
+
+    </div>
+}
+
+const ThirdPage = () => {
+
+    let rafId = null;
+
+    const handleMouseMove = (e) => {
+        const card = e.currentTarget.querySelector(".grid-item");
+        if (rafId === null) {
+            rafId = requestAnimationFrame(() => {
+                const { left, top, width, height } = card.getBoundingClientRect();
+                const relativeX = (e.clientX - left) / width;
+                const relativeY = (e.clientY - top) / height;
+
+                const tiltX = (relativeY - 0.5) * -5;
+                const tiltY = (relativeX - 0.5) * 5;
+
+                card.style.transform = `perspective(750px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(.98,.98,.98)`;
+                rafId = null; // reset RAF
+            });
+        }
+    };
+
+    const handleMouseLeave = (e) => {
+        const card = e.currentTarget.querySelector(".grid-item");
+        card.style.transform = `perspective(750px) rotateX(0) rotateY(0) scale3d(1,1,1)`
+    }
+
+    return <div className="relative z-10 mt-[7250px] mb-12 px-12">
+        <div className="grid grid-rows-2 grid-cols-3 gap-4">
+            <div onTouchStart={handleMouseMove} onTouchEnd={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="col-span-full">
+                <div className="grid-item w-full h-full bg-slate-900 border-2 rounded-lg will-change-transform transition-transform duration-75 ease-linear"></div>
+            </div>
+            <div onTouchStart={handleMouseMove} onTouchEnd={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+                <div className="grid-item aspect-square bg-slate-900 border rounded-lg will-change-transform transition-transform duration-75 ease-linear"></div>
+            </div>
+            <div onTouchStart={handleMouseMove} onTouchEnd={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+                <div className="grid-item aspect-square bg-slate-900 border rounded-lg will-change-transform transition-transform duration-75 ease-linear"></div>
+            </div>
+            <div onTouchStart={handleMouseMove} onTouchEnd={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+                <div className="grid-item aspect-square bg-slate-900 border rounded-lg will-change-transform transition-transform duration-75 ease-linear"></div>
+            </div>
+        </div>
     </div>
 }
 
