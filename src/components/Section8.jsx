@@ -70,16 +70,16 @@ const ThirdPage = () => {
 
     return <div className="relative z-10 mt-[7250px] mb-12 px-12">
         <div className="grid grid-rows-2 grid-cols-3 gap-4">
-            <div onTouchStart={handleMouseMove} onTouchEnd={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="col-span-full">
+            <div onPointerDown={handleMouseMove} onPointerUp={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="col-span-full">
                 <div className="grid-item w-full h-full bg-slate-900 border-2 rounded-lg will-change-transform transition-transform duration-75 ease-linear"></div>
             </div>
-            <div onTouchStart={handleMouseMove} onTouchEnd={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+            <div onPointerDown={handleMouseMove} onPointerUp={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
                 <div className="grid-item aspect-square bg-slate-900 border rounded-lg will-change-transform transition-transform duration-75 ease-linear"></div>
             </div>
-            <div onTouchStart={handleMouseMove} onTouchEnd={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+            <div onPointerDown={handleMouseMove} onPointerUp={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
                 <div className="grid-item aspect-square bg-slate-900 border rounded-lg will-change-transform transition-transform duration-75 ease-linear"></div>
             </div>
-            <div onTouchStart={handleMouseMove} onTouchEnd={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+            <div onPointerDown={handleMouseMove} onPointerUp={handleMouseLeave} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
                 <div className="grid-item aspect-square bg-slate-900 border rounded-lg will-change-transform transition-transform duration-75 ease-linear"></div>
             </div>
         </div>
