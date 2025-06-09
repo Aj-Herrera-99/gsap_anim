@@ -4,6 +4,7 @@ import { Fragment, useEffect, useRef, useState } from "react"
 import { Link, NavLink } from "react-router"
 import { navLinks } from "../config/config"
 import Section3 from "./Section3"
+import { useScrollExitTransition } from "../hooks/useScrollExitTransition"
 
 export default function Section8() {
     const ref = useRef(null)
@@ -24,7 +25,7 @@ export default function Section8() {
             .to(".nav-el", { opacity: 1, duration: 0.02, ...navElCommonVars }, 0.45)
             .to("#first-video", { x: 0, y: 0, rotateZ: 0, ease: "power1.out", duration: .75, }, 3.5)
             .to(document.body, { overflowY: "auto" }, 5)
-    }, { scope: ref })
+    })
 
     return <div ref={ref} className="bg-[#ff6320] uppercase">
         {window.innerWidth >= 1024 &&
@@ -47,9 +48,9 @@ const PathTracker = () => {
         const moveY = gsap.quickTo("#path-tracker", "y", { duration: 0.3, ease: "power2.out" });
 
         const pathTracking = (e) => {
-            const { top, } = window.document.documentElement.getBoundingClientRect();
-            moveX(e.clientX + 15);
-            moveY(e.clientY + 12 - top);
+            const { top, left } = window.document.documentElement.getBoundingClientRect();
+            moveX((e.clientX + 15 - left));
+            moveY((e.clientY + 12 - top));
             if (e.clientY < 30) {
                 setVisible(false)
             } else { setVisible(true) }
@@ -126,12 +127,7 @@ const Navbar = () => {
 const FirstPage = () => {
     const ref = useRef(null)
 
-    useGSAP(() => {
-        gsap.to("#first-page", {
-            x: "-20%", y: "-100%", rotate: -10,
-            scrollTrigger: { pin: true, trigger: ref.current, scrub: 1, start: `+=100px top`, }
-        })
-    }, { scope: ref })
+    useScrollExitTransition(ref, "#first-page")
 
     return <div ref={ref} className="z-10 relative">
         <section id="first-page" className="pt-10 w-screen min-h-[100dvh] overflow-x-hidden flex flex-col justify-between px-2 bg-red-950/70 text-[#e8e9ee]">
@@ -155,7 +151,7 @@ const AnimatedCounter = ({ end = 30, duration = 2 }) => {
                 if (counterRef.current) { counterRef.current.textContent = obj.val < 10 ? "0" + Math.floor(obj.val) : Math.floor(obj.val); }
             }
         }, 0)
-            .to(ref.current, { opacity: 0, duration: 0.05, ease: "power.out" }, duration)
+            .to(ref.current, { opacity: 0, duration: 0.05, ease: "power1.out" }, duration)
             .to(ref.current, { opacity: 1, duration: 0.1, ease: "power1.out" }, duration + 0.05)
             .to(ref.current, { opacity: 0, duration: 0.02, ease: "power1.out" }, duration + 0.15)
 
@@ -189,16 +185,16 @@ const SecondPage = () => {
 
     useGSAP(() => {
         gsap.set("#second-page", {
-            x: "20%", y: "120%", rotate: -20,
+            transform: `translateX(20%) translateY(120%) rotateZ(-20deg)`
         })
 
         gsap.to("#second-page", {
-            x: 0, y: 0, rotate: 0, duration: 1.5, scrollTrigger: { trigger: ref.current, start: `top bottom` }
+            transform: `translateX(0) translateY(0) rotateZ(0)`, duration: 1.5, scrollTrigger: { trigger: ref.current, start: `top bottom`, toggleActions: "play none none reverse" }
         })
 
     }, { scope: ref })
 
-    return <div ref={ref} className="relative h-screen">
+    return <div id="container_2" ref={ref} className="relative h-screen">
         <Section3 id="second-page" className="absolute top-0 left-0 bg-blue-900/65" />
     </div>
 }

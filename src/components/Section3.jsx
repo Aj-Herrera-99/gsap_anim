@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 const images = Array.from({ length: 18 }).map((_, i) => ({ src: `/images/${i + 1}.jpg`, id: i + 1 }))
 
-export default function Section3({ id, className }) {
+export default function Section3({ id, className, style={} }) {
     const panelWidth = useMemo(() => window.innerWidth < 768 ? 125 : 200, []);
     const sectionRef = useRef(null)
     const wrapperRef = useRef(null)
@@ -100,6 +100,7 @@ export default function Section3({ id, className }) {
             x: -totalWidth + wrapperWidth - wrapperWidth / 2 + panels[0].offsetWidth / 2, // wrapperWidth / 2 perche devo spostare ulteriormente a sx di meta wrapper per via di pl-[50%]
             ease: "sine.out",
             scrollTrigger: {
+                pinnedContainer: "#container_2",
                 trigger: section,
                 pin: true,
                 scrub: true,
@@ -211,7 +212,7 @@ export default function Section3({ id, className }) {
 
 
     return (
-        <div id={id} ref={sectionRef} className={`${className} h-screen w-screen min-w-screen flex flex-col py-6 items-center justify-between space-y-6`}>
+        <div style={style} id={id} ref={sectionRef} className={`${className} h-screen w-screen min-w-screen flex flex-col py-6 items-center justify-between space-y-6`}>
 
             {/* panels */}
             <div ref={wrapperRef} className="grow w-[90%] overflow-hidden">
